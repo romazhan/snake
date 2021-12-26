@@ -1,0 +1,49 @@
+* {
+    box-sizing: border-box;
+    border: none; outline: none;
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    font-family: arial;
+    user-select: none;
+}
+
+canvas {
+    width: 80vw; height: 80vw;
+    margin-top: 20px;
+    border: 1px solid #c7c5c5;
+    border-radius: 10px;
+}
+
+#score {
+    margin: 12px auto 15px auto;
+    width: 30vw;
+    padding: 10px;
+    font-size: 22px;
+    border: 1px solid #c7c5c5;
+    border-radius: 10px;
+    background-color: #fafafa;
+}
+
+#joystick {
+    overflow: hidden;
+    margin: 0 auto;
+    width: 55vw; height: 55vw;
+    border: 1px solid #c7c5c5;
+    border-radius: 360px;
+}
+
+button {
+    float: left;
+    text-align: center;
+    width: 33.333%; height: 33.333%;
+    border-radius: 5px;
+    font-size: 25px;
+    background-color: #fafafa;
+}
+
+button:active {
+    background-color: #d0d6d7;
+}
