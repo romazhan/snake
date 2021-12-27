@@ -14,14 +14,19 @@
         <div id='score'>0</div>
         <div id='joystick'>
             <button></button><button id='up'>↑</button><button></button>
-            <button id='left'>←</button><button></button><button id='right'>→</button>
+            <button id='left'>←</button><button id='restart'></button><button id='right'>→</button>
             <button></button><button id='down'>↓</button><button></button>
         </div>
         <script type='module'>
             'use strict';
             import Game from './engine.js';
             document.addEventListener('DOMContentLoaded', () => {
-                new Game().start();
+                new Game().start(() => {
+                    const restart = document.getElementById('restart');
+                    restart.addEventListener('click', () => {
+                        window.location.reload();
+                    }); restart.innerText = 'R';
+                });
             });
         </script>
     </body>

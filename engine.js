@@ -175,7 +175,7 @@ export default class {
         this.run || (() => { this.updateState(); this.run = true; })();
         this.validate() && setTimeout(() => {
             this.snake.updateHead(this.joystick.ox, this.joystick.oy);
-            this.start();
+            this.start(stop);
         }, this.speed) || (stop ? stop() : alert('Game over!'));
     }
 }
