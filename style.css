@@ -35,7 +35,7 @@ canvas {
     border-radius: 360px;
 }
 
-button {
+button, #button {
     float: left;
     text-align: center;
     width: 33.333%; height: 33.333%;
