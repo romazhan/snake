@@ -60,7 +60,7 @@ class Food {
 class Joystick {
     constructor() {
         this.leftButton = '#left'; this.rightButton = '#right';
-        this.upButton = '#up', this.downButton = '#down';
+        this.upButton = '#up'; this.downButton = '#down';
         this.ox = this.alpha = 10; this.oy = this.beta = 0;
         this.direction = 'right';
     }
