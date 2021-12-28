@@ -110,7 +110,7 @@ export default class {
         this.joystick = new Joystick();
         this.context = this.map.getContext();
         this.alpha = (this.snake.width + this.snake.height) / 2;
-        this.speed = 80; this.reward = 100;
+        this.speed = 80; this.reward = 100; this.fps = 0;
         this.scoreSelector = '#score';
         this.joystick.bind();
     }
@@ -168,7 +168,7 @@ export default class {
                 this.drawMap(); this.drawFood(); this.drawSnake();
                 return true;
             })() || clearInterval(interval);
-        }, 0);
+        }, this.fps);
     }
 
     start(stop = undefined) {
