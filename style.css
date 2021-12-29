@@ -10,17 +10,19 @@ body {
     user-select: none;
 }
 
-canvas {
+#map {
+    display: block;
+    margin: 20px auto 0 auto;
     width: 80vw; height: 80vw;
-    margin-top: 20px;
     border: 1px solid #c7c5c5;
     border-radius: 10px;
 }
 
 #score {
-    margin: 12px auto 15px auto;
+    margin: 15px auto 15px auto;
     width: 30vw;
     padding: 10px;
+    text-align: center;
     font-size: 21px;
     border: 1px solid #c7c5c5;
     border-radius: 10px;
@@ -35,12 +37,12 @@ canvas {
     border-radius: 360px;
 }
 
-button, #button {
+button, #dummy-button {
     float: left;
-    text-align: center;
     width: 33.333%; height: 33.333%;
-    border-radius: 5px;
+    text-align: center;
     font-size: 25px;
+    border-radius: 5px;
     background-color: #fafafa;
     transition: background-color 0.35s;
 }
