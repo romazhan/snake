@@ -118,6 +118,11 @@ export default class {
         this.context.fillRect(0, 0, this.map.width, this.map.height);
     }
 
+    drawFood() {
+        this.context.fillStyle = this.food.colour;
+        this.context.fillRect(this.food.x, this.food.y, this.food.width, this.food.height);
+    }
+
     drawSnake() {
         let isHead = true;
         this.snake.body.forEach(part => {
@@ -128,19 +133,17 @@ export default class {
         });
     }
 
-    drawFood() {
-        this.context.fillStyle = this.food.colour;
-        this.context.fillRect(this.food.x, this.food.y, this.food.width, this.food.height);
+    addPoints() {
+        document.body.querySelector(this.scoreSelector).innerText = parseInt(
+            document.body.querySelector(this.scoreSelector).innerText
+        ) + this.reward;
     }
 
     validate() {
         if(this.snake.body[0].x !== this.food.x || this.snake.body[0].y !== this.food.y) {
             this.snake.body.pop();
         } else {
-            document.body.querySelector(this.scoreSelector).innerText = parseInt(
-                document.body.querySelector(this.scoreSelector).innerText
-            ) + this.reward;
-            this.food.coordinate();
+            this.addPoints(); this.food.coordinate();
         }
         this.snake.body.forEach(part => {
             if(part.x === this.food.x && part.y === this.food.y) {
