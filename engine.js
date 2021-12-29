@@ -108,7 +108,7 @@ export default class {
         this.joystick = new Joystick();
         this.context = this.map.getContext();
         this.alpha = (this.snake.width + this.snake.height) / 2;
-        this.speed = 80; this.reward = 100; this.fps = 0;
+        this.speed = 85; this.reward = 100; this.fps = 0;
         this.scoreSelector = '#score';
         this.joystick.bind();
     }
