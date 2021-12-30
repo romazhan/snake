@@ -164,7 +164,7 @@ export default class {
         return this.run;
     }
 
-    updateState() {
+    startStateUpdateCycle() {
         let interval = setInterval(() => {
             this.run && (() => {
                 this.drawMap(); this.drawFood(); this.drawSnake();
@@ -174,7 +174,9 @@ export default class {
     }
 
     start(stop = undefined) {
-        this.run || (() => { this.updateState(); this.run = true; })();
+        if(!this.run) {
+            this.startStateUpdateCycle(); this.run = true;
+        }
         this.validate() && setTimeout(() => {
             this.snake.updateHead(this.joystick.ox, this.joystick.oy);
             this.start(stop);
