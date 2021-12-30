@@ -41,28 +41,29 @@ class Snake {
 }
 
 class Food {
-    constructor(mapWidth, mapHeight) {
+    constructor(mapWidth, mapHeight, alpha) {
         this.mapWidth = mapWidth; this.mapHeight = mapHeight;
         this.width = this.height = 10;
         this.colour = '#da4444';
+        this.alpha = alpha;
         this.coordinate();
     }
 
-    random(minimum, maximum) {
-        return Math.round((Math.random() * (maximum - minimum) + minimum) / 10) * 10;
+    randomCoordinate(minimum, maximum) {
+        return Math.round((Math.random() * (maximum - minimum) + minimum) / this.alpha) * this.alpha;
     }
 
     coordinate() {
-        this.x = this.random(0, this.mapWidth - this.width);
-        this.y = this.random(0, this.mapHeight - this.height);
+        this.x = this.randomCoordinate(0, this.mapWidth - this.width);
+        this.y = this.randomCoordinate(0, this.mapHeight - this.height);
     }
 }
 
 class Joystick {
-    constructor() {
+    constructor(alpha) {
         this.leftButton = '#left'; this.rightButton = '#right';
         this.upButton = '#up'; this.downButton = '#down';
-        this.ox = this.alpha = 10; this.oy = this.beta = 0;
+        this.ox = this.alpha = alpha; this.oy = this.beta = 0;
         this.direction = 'right';
     }
 
@@ -105,10 +106,10 @@ export default class {
         this.speed = 85; this.reward = 100; this.fps = 0;
         this.map = new Map();
         this.snake = new Snake(this.map.width / 2);
-        this.food = new Food(this.map.width, this.map.height);
-        this.joystick = new Joystick();
+        this.food = new Food(this.map.width, this.map.height, this.snake.alpha);
+        this.joystick = new Joystick(this.snake.alpha);
         this.context = this.map.getContext();
-        this.alpha = (this.snake.width + this.snake.height) / 2;
+        this.alpha = this.snake.alpha;
         this.scoreSelector = '#score';
         this.joystick.bind();
         this.run = false;
