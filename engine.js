@@ -174,7 +174,7 @@ export default class {
     }
 
     start(stop = undefined) {
-        if(!this.run) {
+        if(this.run === false) {
             this.startStateUpdateCycle(); this.run = true;
         }
         this.validate() && setTimeout(() => {
