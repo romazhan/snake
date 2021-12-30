@@ -41,7 +41,7 @@ class Snake {
 }
 
 class Food {
-    constructor(mapWidth, mapHeight, alpha) {
+    constructor(mapWidth, mapHeight, alpha = 10) {
         this.mapWidth = mapWidth; this.mapHeight = mapHeight;
         this.width = this.height = 10;
         this.colour = '#da4444';
@@ -60,7 +60,7 @@ class Food {
 }
 
 class Joystick {
-    constructor(alpha) {
+    constructor(alpha = 10) {
         this.leftButton = '#left'; this.rightButton = '#right';
         this.upButton = '#up'; this.downButton = '#down';
         this.ox = this.alpha = alpha; this.oy = this.beta = 0;
@@ -103,7 +103,8 @@ class Joystick {
 
 export default class {
     constructor() {
-        this.speed = 85; this.reward = 100; this.fps = 0;
+        this.speed = 85; this.fps = 0;
+        this.reward = 100;
         this.map = new Map();
         this.snake = new Snake(this.map.width / 2);
         this.food = new Food(this.map.width, this.map.height, this.snake.alpha);
