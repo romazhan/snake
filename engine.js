@@ -18,6 +18,7 @@ class Snake {
     constructor(center) {
         this.parts = 4;
         this.width = this.height = 10;
+        this.alpha = (this.width + this.height) / 2;
         this.headColour = '#459045';
         this.bodyColour = '#43c643';
         this.createBody(center);
@@ -25,11 +26,11 @@ class Snake {
 
     createBody(center) {
         this.body = [];
-        let indent = (this.width + this.height) / 2;
+        let indent = this.alpha;
         for(let iteration = 0; iteration <= this.parts; ++iteration) {
             const part = {x : center - indent, y : center};
             this.body.push(part);
-            indent += 10;
+            indent += this.alpha;
         }
     }
 
