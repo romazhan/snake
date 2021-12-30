@@ -60,10 +60,11 @@ class Food {
 }
 
 class Joystick {
-    constructor(alpha = 10) {
+    constructor(alpha = 10, beta = 0) {
         this.leftButton = '#left'; this.rightButton = '#right';
         this.upButton = '#up'; this.downButton = '#down';
-        this.ox = this.alpha = alpha; this.oy = this.beta = 0;
+        this.ox = this.alpha = alpha;
+        this.oy = this.beta = beta;
         this.direction = 'right';
     }
 
@@ -108,7 +109,7 @@ export default class {
         this.map = new Map();
         this.snake = new Snake(this.map.width / 2);
         this.food = new Food(this.map.width, this.map.height, this.snake.alpha);
-        this.joystick = new Joystick(this.snake.alpha);
+        this.joystick = new Joystick(this.snake.alpha, 0);
         this.context = this.map.getContext();
         this.alpha = this.snake.alpha;
         this.scoreSelector = '#score';
