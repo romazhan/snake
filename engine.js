@@ -16,26 +16,26 @@ class Map {
 
 class Snake {
     constructor(center) {
+        this.body = [];
         this.parts = 4;
         this.width = this.height = 10;
         this.alpha = (this.width + this.height) / 2;
         this.headColour = '#459045';
         this.bodyColour = '#43c643';
-        this.createBody(center);
+        this.formBody(center);
     }
 
-    createBody(center) {
-        this.body = [];
+    formBody(center) {
         let indent = this.alpha;
         for(let iteration = 0; iteration <= this.parts; ++iteration) {
-            const part = {x : center - indent, y : center};
+            const part = { x : center - indent, y : center };
             this.body.push(part);
             indent += this.alpha;
         }
     }
 
     updateHead(ox, oy) {
-        const head = {x : this.body[0].x + ox, y : this.body[0].y + oy};
+        const head = { x : this.body[0].x + ox, y : this.body[0].y + oy };
         this.body.unshift(head);
     }
 }
@@ -45,6 +45,7 @@ class Food {
         this.mapWidth = mapWidth; this.mapHeight = mapHeight;
         this.width = this.height = 10;
         this.colour = '#da4444';
+        this.x = this.y = 0;
         this.alpha = alpha;
         this.coordinate();
     }
@@ -104,7 +105,8 @@ class Joystick {
 
 export default class {
     constructor() {
-        this.speed = 85; this.fps = 0;
+        this.fps = 0;
+        this.speed = 85;
         this.reward = 100;
         this.map = new Map();
         this.snake = new Snake(this.map.width / 2);
@@ -114,6 +116,7 @@ export default class {
         this.alpha = this.snake.alpha;
         this.scoreSelector = '#score';
         this.joystick.bind();
+        this.updateFrame();
         this.run = false;
     }
 
@@ -129,11 +132,8 @@ export default class {
     }
 
     drawSnake() {
-        let isHead = true;
-        this.snake.body.forEach(part => {
-            this.context.fillStyle = isHead ? (() => { isHead = false;
-                return this.snake.headColour;
-            })() : this.snake.bodyColour;
+        this.snake.body.forEach((part, iteration) => {
+            this.context.fillStyle = iteration ? this.snake.bodyColour: this.snake.headColour;
             this.context.fillRect(part.x, part.y, this.snake.width, this.snake.height);
         });
     }
@@ -141,6 +141,16 @@ export default class {
     drawFood() {
         this.context.fillStyle = this.food.colour;
         this.context.fillRect(this.food.x, this.food.y, this.food.width, this.food.height);
+    }
+
+    updateFrame() {
+        this.drawMap(); this.drawSnake(); this.drawFood();
+    }
+
+    startUpdateFrameCycle() {
+        let interval = setInterval(() => {
+            this.run ? this.updateFrame() : clearInterval(interval);
+        }, this.fps);
     }
 
     validate() {
@@ -167,18 +177,10 @@ export default class {
         return this.run;
     }
 
-    startStateUpdateCycle() {
-        let interval = setInterval(() => {
-            this.run && (() => {
-                this.drawMap(); this.drawSnake(); this.drawFood();
-                return true;
-            })() || clearInterval(interval);
-        }, this.fps);
-    }
-
     start(stop = undefined) {
         if(this.run === false) {
-            this.startStateUpdateCycle(); this.run = true;
+            this.run = true;
+            this.startUpdateFrameCycle();
         }
         this.validate() && setTimeout(() => {
             this.snake.updateHead(this.joystick.ox, this.joystick.oy);
