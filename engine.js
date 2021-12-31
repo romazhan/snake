@@ -117,14 +117,15 @@ export default class {
         this.run = false;
     }
 
+    addPoints() {
+        document.body.querySelector(this.scoreSelector).innerText = parseInt(
+            document.body.querySelector(this.scoreSelector).innerText
+        ) + this.reward;
+    }
+
     drawMap() {
         this.context.fillStyle = this.map.backgroundColour;
         this.context.fillRect(0, 0, this.map.width, this.map.height);
-    }
-
-    drawFood() {
-        this.context.fillStyle = this.food.colour;
-        this.context.fillRect(this.food.x, this.food.y, this.food.width, this.food.height);
     }
 
     drawSnake() {
@@ -133,14 +134,13 @@ export default class {
             this.context.fillStyle = isHead ? (() => { isHead = false;
                 return this.snake.headColour;
             })() : this.snake.bodyColour;
-            this.context.fillRect(part.x , part.y, this.snake.width, this.snake.height);
+            this.context.fillRect(part.x, part.y, this.snake.width, this.snake.height);
         });
     }
 
-    addPoints() {
-        document.body.querySelector(this.scoreSelector).innerText = parseInt(
-            document.body.querySelector(this.scoreSelector).innerText
-        ) + this.reward;
+    drawFood() {
+        this.context.fillStyle = this.food.colour;
+        this.context.fillRect(this.food.x, this.food.y, this.food.width, this.food.height);
     }
 
     validate() {
@@ -170,7 +170,7 @@ export default class {
     startStateUpdateCycle() {
         let interval = setInterval(() => {
             this.run && (() => {
-                this.drawMap(); this.drawFood(); this.drawSnake();
+                this.drawMap(); this.drawSnake(); this.drawFood();
                 return true;
             })() || clearInterval(interval);
         }, this.fps);
