@@ -3,8 +3,8 @@
 class Map {
     constructor() {
         this.id = 'map';
+        this.color = '#fafafa';
         this.width = this.height = 240;
-        this.backgroundColour = '#fafafa';
     }
 
     getContext() {
@@ -20,22 +20,26 @@ class Snake {
         this.parts = 4;
         this.width = this.height = 10;
         this.alpha = (this.width + this.height) / 2;
-        this.headColour = '#459045';
-        this.bodyColour = '#43c643';
+        this.headColor = '#459045';
+        this.bodyColor = '#43c643';
         this.formBody(center);
     }
 
     formBody(center) {
         let indent = this.alpha;
         for(let iteration = 0; iteration <= this.parts; ++iteration) {
-            const part = { x : center - indent, y : center };
+            const part = {
+                x : center - indent, y : center
+            };
             this.body.push(part);
             indent += this.alpha;
         }
     }
 
     updateHead(ox, oy) {
-        const head = { x : this.body[0].x + ox, y : this.body[0].y + oy };
+        const head = {
+            x : this.body[0].x + ox, y : this.body[0].y + oy
+        };
         this.body.unshift(head);
     }
 }
@@ -44,7 +48,7 @@ class Food {
     constructor(mapWidth, mapHeight, alpha = 10) {
         this.mapWidth = mapWidth; this.mapHeight = mapHeight;
         this.width = this.height = 10;
-        this.colour = '#da4444';
+        this.color = '#da4444';
         this.x = this.y = 0;
         this.alpha = alpha;
         this.coordinate();
@@ -127,19 +131,19 @@ export default class {
     }
 
     drawMap() {
-        this.context.fillStyle = this.map.backgroundColour;
+        this.context.fillStyle = this.map.color;
         this.context.fillRect(0, 0, this.map.width, this.map.height);
     }
 
     drawSnake() {
         this.snake.body.forEach((part, iteration) => {
-            this.context.fillStyle = iteration ? this.snake.bodyColour: this.snake.headColour;
+            this.context.fillStyle = iteration ? this.snake.bodyColor: this.snake.headColor;
             this.context.fillRect(part.x, part.y, this.snake.width, this.snake.height);
         });
     }
 
     drawFood() {
-        this.context.fillStyle = this.food.colour;
+        this.context.fillStyle = this.food.color;
         this.context.fillRect(this.food.x, this.food.y, this.food.width, this.food.height);
     }
 
