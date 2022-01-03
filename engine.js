@@ -2,13 +2,13 @@
 
 class Map {
     constructor() {
-        this.id = 'map';
+        this.selector = '#map';
         this.color = '#fafafa';
         this.width = this.height = 240;
     }
 
     getContext() {
-        const canvas = document.getElementById(this.id);
+        const canvas = document.body.querySelector(this.selector);
         canvas.width = this.width; canvas.height = this.height;
         return canvas.getContext('2d');
     }
