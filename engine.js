@@ -152,7 +152,7 @@ export default class {
     }
 
     startUpdateFrameCycle() {
-        let interval = setInterval(() => {
+        const interval = setInterval(() => {
             this.run ? this.updateFrame() : clearInterval(interval);
         }, this.fps);
     }
