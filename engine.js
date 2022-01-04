@@ -113,8 +113,8 @@ export default class {
         this.speed = 85;
         this.reward = 100;
         this.map = new Map();
+        this.food = new Food(this.map.width, this.map.height);
         this.snake = new Snake(this.map.width / 2);
-        this.food = new Food(this.map.width, this.map.height, this.snake.alpha);
         this.joystick = new Joystick(this.snake.alpha, 0);
         this.context = this.map.getContext();
         this.alpha = this.snake.alpha;
