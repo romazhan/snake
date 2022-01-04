@@ -14,6 +14,26 @@ class Map {
     }
 }
 
+class Food {
+    constructor(mapWidth, mapHeight, alpha = 10) {
+        this.mapWidth = mapWidth; this.mapHeight = mapHeight;
+        this.width = this.height = 10;
+        this.color = '#da4444';
+        this.x = this.y = 0;
+        this.alpha = alpha;
+        this.coordinate();
+    }
+
+    randomCoordinate(minimum, maximum) {
+        return Math.round((Math.random() * (maximum - minimum) + minimum) / this.alpha) * this.alpha;
+    }
+
+    coordinate() {
+        this.x = this.randomCoordinate(0, this.mapWidth - this.width);
+        this.y = this.randomCoordinate(0, this.mapHeight - this.height);
+    }
+}
+
 class Snake {
     constructor(center) {
         this.body = [];
@@ -41,26 +61,6 @@ class Snake {
             x : this.body[0].x + ox, y : this.body[0].y + oy
         };
         this.body.unshift(head);
-    }
-}
-
-class Food {
-    constructor(mapWidth, mapHeight, alpha = 10) {
-        this.mapWidth = mapWidth; this.mapHeight = mapHeight;
-        this.width = this.height = 10;
-        this.color = '#da4444';
-        this.x = this.y = 0;
-        this.alpha = alpha;
-        this.coordinate();
-    }
-
-    randomCoordinate(minimum, maximum) {
-        return Math.round((Math.random() * (maximum - minimum) + minimum) / this.alpha) * this.alpha;
-    }
-
-    coordinate() {
-        this.x = this.randomCoordinate(0, this.mapWidth - this.width);
-        this.y = this.randomCoordinate(0, this.mapHeight - this.height);
     }
 }
 
@@ -135,6 +135,11 @@ export default class {
         this.context.fillRect(0, 0, this.map.width, this.map.height);
     }
 
+    drawFood() {
+        this.context.fillStyle = this.food.color;
+        this.context.fillRect(this.food.x, this.food.y, this.food.width, this.food.height);
+    }
+
     drawSnake() {
         this.snake.body.forEach((part, iteration) => {
             this.context.fillStyle = iteration ? this.snake.bodyColor: this.snake.headColor;
@@ -142,13 +147,8 @@ export default class {
         });
     }
 
-    drawFood() {
-        this.context.fillStyle = this.food.color;
-        this.context.fillRect(this.food.x, this.food.y, this.food.width, this.food.height);
-    }
-
     updateFrame() {
-        this.drawMap(); this.drawSnake(); this.drawFood();
+        this.drawMap(); this.drawFood(); this.drawSnake();
     }
 
     startUpdateFrameCycle() {
