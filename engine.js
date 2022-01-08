@@ -9,7 +9,8 @@ class Map {
 
     getContext() {
         const canvas = document.body.querySelector(this.selector);
-        canvas.width = this.width; canvas.height = this.height;
+        canvas.width = this.width;
+        canvas.height = this.height;
         return canvas.getContext('2d');
     }
 }
@@ -65,12 +66,14 @@ class Snake {
 }
 
 class Joystick {
-    constructor(alpha = 10, beta = 0) {
+    constructor(speed, alpha = 10, beta = 0) {
         this.leftButton = '#left'; this.rightButton = '#right';
         this.upButton = '#up'; this.downButton = '#down';
         this.ox = this.alpha = alpha;
         this.oy = this.beta = beta;
         this.direction = 'right';
+        this.speed = speed - 10;
+        this.delay = false;
     }
 
     left() {
@@ -100,8 +103,11 @@ class Joystick {
     bind() {
         const directions = ['left', 'right', 'up', 'down'];
         [this.leftButton, this.rightButton, this.upButton, this.downButton].forEach((selector, iteration) => {
-            document.body.querySelector(selector).addEventListener('click', () => {
+            document.body.querySelector(selector).addEventListener('click', event => {
+                if(this.delay) { return event.preventDefault(); }
+                this.delay = true;
                 this[directions[iteration]]();
+                setTimeout(() => { this.delay = false; }, this.speed);
             });
         });
     }
@@ -115,7 +121,7 @@ export default class {
         this.map = new Map();
         this.food = new Food(this.map.width, this.map.height);
         this.snake = new Snake(this.map.width / 2);
-        this.joystick = new Joystick(this.snake.alpha, 0);
+        this.joystick = new Joystick(this.speed, this.snake.alpha, 0);
         this.context = this.map.getContext();
         this.alpha = this.snake.alpha;
         this.scoreSelector = '#score';
@@ -182,7 +188,7 @@ export default class {
     }
 
     start(stop = undefined) {
-        if(this.run === false) {
+        if(!this.run) {
             this.run = true;
             this.startUpdateFrameCycle();
         }
