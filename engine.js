@@ -9,16 +9,16 @@ class Map {
 
     getContext() {
         const canvas = document.body.querySelector(this.selector);
-        canvas.width = this.width;
-        canvas.height = this.height;
+        canvas.width = this.width; canvas.height = this.height;
         return canvas.getContext('2d');
     }
 }
 
 class Food {
     constructor(mapWidth, mapHeight, alpha = 10) {
-        this.mapWidth = mapWidth; this.mapHeight = mapHeight;
         this.width = this.height = 10;
+        this.mapWidth = mapWidth;
+        this.mapHeight = mapHeight;
         this.color = '#da4444';
         this.x = this.y = 0;
         this.alpha = alpha;
