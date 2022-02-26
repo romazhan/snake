@@ -1,10 +1,11 @@
 'use strict';
 
 class Map {
-    constructor() {
-        this.selector = '#map';
-        this.color = '#fafafa';
-        this.width = this.height = 240;
+    constructor(config) {
+        this.selector = config.selector;
+        this.width = config.width;
+        this.height = config.height;
+        this.color = config.color;
     }
 
     getContext() {
@@ -15,45 +16,32 @@ class Map {
 }
 
 class Food {
-    constructor(mapWidth, mapHeight, alpha = 10) {
-        this.width = this.height = 10;
-        this.mapWidth = mapWidth;
-        this.mapHeight = mapHeight;
-        this.color = '#da4444';
-        this.x = this.y = 0;
-        this.alpha = alpha;
-        this.coordinate();
-    }
-
-    randomCoordinate(minimum, maximum) {
-        return Math.round((Math.random() * (maximum - minimum) + minimum) / this.alpha) * this.alpha;
-    }
-
-    coordinate() {
-        this.x = this.randomCoordinate(0, this.mapWidth - this.width);
-        this.y = this.randomCoordinate(0, this.mapHeight - this.height);
+    constructor(config) {
+        this.width = config.width;
+        this.height = config.height;
+        this.color = config.color;
+        this.x = config.x || 0;
+        this.y = config.y || 0;
     }
 }
 
 class Snake {
-    constructor(center) {
+    constructor(config) {
+        this.parts = config.parts;
+        this.width = config.width;
+        this.height = config.height;
+        this.headColor = config.headColor;
+        this.bodyColor = config.bodyColor;
         this.body = [];
-        this.parts = 4;
-        this.width = this.height = 10;
-        this.alpha = (this.width + this.height) / 2;
-        this.headColor = '#459045';
-        this.bodyColor = '#43c643';
-        this.formBody(center);
     }
 
-    formBody(center) {
-        let indent = this.alpha;
+    formBody(center, alpha) {
+        let indent = alpha;
         for(let iteration = 0; iteration <= this.parts; ++iteration) {
             const part = {
                 x : center - indent, y : center
-            };
+            }; indent += alpha;
             this.body.push(part);
-            indent += this.alpha;
         }
     }
 
@@ -66,12 +54,14 @@ class Snake {
 }
 
 class Joystick {
-    constructor(speed, alpha = 10, beta = 0) {
-        this.leftButton = '#left'; this.rightButton = '#right';
-        this.upButton = '#up'; this.downButton = '#down';
+    constructor(config, speed, alpha = 10, beta = 0) {
+        this.direction = config.direction;
+        this.leftButton = config.leftSelector;
+        this.rightButton = config.rightSelector;
+        this.upButton = config.upSelector;
+        this.downButton = config.downSelector;
         this.ox = this.alpha = alpha;
         this.oy = this.beta = beta;
-        this.direction = 'right';
         this.speed = speed - 10;
         this.delay = false;
     }
@@ -114,20 +104,31 @@ class Joystick {
 }
 
 export default class {
-    constructor() {
-        this.fps = 0;
-        this.speed = 85;
-        this.reward = 100;
-        this.map = new Map();
-        this.food = new Food(this.map.width, this.map.height);
-        this.snake = new Snake(this.map.width / 2);
-        this.joystick = new Joystick(this.speed, this.snake.alpha, 0);
+    constructor(config) {
+        this.fps = config.game.fps;
+        this.speed = config.game.speed;
+        this.reward = config.game.reward;
+        this.scoreSelector = config.game.scoreSelector;
+        this.map = new Map(config.map);
+        this.food = new Food(config.food);
+        this.snake = new Snake(config.snake);
+        this.alpha = (this.snake.width + this.snake.height) / 2;
+        this.snake.formBody(this.map.width / 2, this.alpha);
+        this.joystick = new Joystick(config.joystick, this.speed, this.alpha, 0);
         this.context = this.map.getContext();
-        this.alpha = this.snake.alpha;
-        this.scoreSelector = '#score';
+        this.foodCoordinate();
         this.joystick.bind();
         this.updateFrame();
         this.run = false;
+    }
+
+    randomFoodCoordinate(minimum, maximum) {
+        return Math.round((Math.random() * (maximum - minimum) + minimum) / this.alpha) * this.alpha;
+    }
+
+    foodCoordinate() {
+        this.food.x = this.randomFoodCoordinate(0, this.map.width - this.food.width);
+        this.food.y = this.randomFoodCoordinate(0, this.map.height - this.food.height);
     }
 
     addPoints() {
@@ -167,11 +168,11 @@ export default class {
         if(this.snake.body[0].x !== this.food.x || this.snake.body[0].y !== this.food.y) {
             this.snake.body.pop();
         } else {
-            this.addPoints(); this.food.coordinate();
+            this.addPoints(); this.foodCoordinate();
         }
         this.snake.body.forEach(part => {
             if(part.x === this.food.x && part.y === this.food.y) {
-                this.food.coordinate();
+                this.foodCoordinate();
             }
         });
         for(let iteration = 4; iteration < this.snake.body.length; ++iteration) {
@@ -188,8 +189,7 @@ export default class {
     }
 
     start(stop = undefined) {
-        if(!this.run) {
-            this.run = true;
+        if(!this.run) { this.run = true;
             this.startUpdateFrameCycle();
         }
         this.validate() && setTimeout(() => {

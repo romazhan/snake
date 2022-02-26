@@ -20,8 +20,9 @@
         <script type='module'>
             'use strict';
             import Game from './engine.js';
+            import config from './config.js';
             document.addEventListener('DOMContentLoaded', () => {
-                new Game().start(() => {
+                new Game(config).start(() => {
                     const restart = document.getElementById('restart');
                     restart.addEventListener('click', () => {
                         window.location.reload();
