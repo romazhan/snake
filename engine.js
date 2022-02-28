@@ -35,11 +35,11 @@ class Snake {
         this.body = [];
     }
 
-    formBody(center, alpha) {
+    formBody(coordinate, alpha) {
         let indent = alpha;
         for(let iteration = 0; iteration <= this.parts; ++iteration) {
             const part = {
-                x : center - indent, y : center
+                x : coordinate - indent, y : coordinate
             }; indent += alpha;
             this.body.push(part);
         }
