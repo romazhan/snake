@@ -38,7 +38,8 @@ class Snake {
         for(let iteration = 0; iteration <= this.parts; ++iteration) {
             const part = {
                 x : coordinate - indent, y : coordinate
-            }; indent += alpha;
+            };
+            indent += alpha;
             this.body.push(part);
         }
     }
