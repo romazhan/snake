@@ -1,5 +1,3 @@
-'use strict';
-
 class Map {
     constructor(config) {
         this.selector = config.selector;
@@ -67,25 +65,25 @@ class Joystick {
     }
 
     left() {
-        if(this.direction === 'right') { return false; }
+        if(this.direction === 'right') return;
         this.ox = -this.alpha; this.oy = this.beta;
         this.direction = 'left';
     }
 
     right() {
-        if(this.direction === 'left') { return false; }
+        if(this.direction === 'left') return;
         this.ox = this.alpha; this.oy = this.beta;
         this.direction = 'right';
     }
 
     up() {
-        if(this.direction === 'down') { return false; }
+        if(this.direction === 'down') return;
         this.ox = this.beta; this.oy = -this.alpha;
         this.direction = 'up';
     }
 
     down() {
-        if(this.direction === 'up') { return false; }
+        if(this.direction === 'up') return;
         this.ox = this.beta; this.oy = this.alpha;
         this.direction = 'down';
     }
@@ -94,7 +92,7 @@ class Joystick {
         const directions = ['left', 'right', 'up', 'down'];
         [this.leftButton, this.rightButton, this.upButton, this.downButton].forEach((selector, iteration) => {
             document.body.querySelector(selector).addEventListener('click', event => {
-                if(this.delay) { return event.preventDefault(); }
+                if(this.delay) return event.preventDefault();
                 this.delay = true;
                 this[directions[iteration]]();
                 setTimeout(() => { this.delay = false; }, this.speed);
@@ -168,7 +166,8 @@ export default class {
         if(this.snake.body[0].x !== this.food.x || this.snake.body[0].y !== this.food.y) {
             this.snake.body.pop();
         } else {
-            this.addPoints(); this.foodCoordinate();
+            this.addPoints();
+            this.foodCoordinate();
         }
         this.snake.body.forEach(part => {
             if(part.x === this.food.x && part.y === this.food.y) {
@@ -183,7 +182,7 @@ export default class {
         [this.snake.body[0].x < 0, this.snake.body[0].x > this.map.width - this.alpha,
             this.snake.body[0].y < 0, this.snake.body[0].y > this.map.height - this.alpha
         ].forEach(condition => {
-            if(condition) { this.run = false; }
+            if(condition) this.run = false;
         });
         return this.run;
     }
