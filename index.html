@@ -23,7 +23,7 @@
             document.addEventListener('DOMContentLoaded', () => {
                 new Game(config).start(() => {
                     const restartButton = document.getElementById('restart');
-                    restartButton.addEventListener('click', window.location.reload);
+                    restartButton.addEventListener('click', () => window.location.reload());
                     restartButton.innerText = 'R';
                 });
             });
