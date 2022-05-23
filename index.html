@@ -22,10 +22,9 @@
             import config from './config.js';
             document.addEventListener('DOMContentLoaded', () => {
                 new Game(config).start(() => {
-                    const restart = document.getElementById('restart');
-                    restart.addEventListener('click', () => {
-                        window.location.reload();
-                    }); restart.innerText = 'R';
+                    const restartButton = document.getElementById('restart');
+                    restartButton.addEventListener('click', window.location.reload);
+                    restartButton.innerText = 'R';
                 });
             });
         </script>
